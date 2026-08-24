@@ -141,8 +141,9 @@
   @media (max-width: 860px) {
     .pattern-grid { grid-template-columns: 1fr 1fr; }
     .included-callout-inner { grid-template-columns: 1fr; }
-    nav { justify-content: center; }
+    nav { justify-content: space-between; }
     .nav-links, .nav-needle { display: none; }
+    .hamburger { display: flex; }
     footer { flex-direction: column; gap: 1rem; text-align: center; }
   }
   @media (max-width: 560px) {
@@ -150,6 +151,19 @@
     body { cursor: auto; }
     .cursor, .cursor-ring { display: none; }
   }
+
+  /* MOBILE HAMBURGER */
+  .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; z-index: 200; }
+  .hamburger span { display: block; width: 24px; height: 2px; background: var(--text-mid); border-radius: 2px; transition: all 0.3s ease; }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); background: var(--cyan); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background: var(--cyan); }
+  .mobile-nav { display: none; position: fixed; inset: 0; background: rgba(8,7,15,0.97); backdrop-filter: blur(20px); z-index: 150; flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem; }
+  .mobile-nav.open { display: flex; }
+  .mobile-nav a { font-family: 'Great Vibes', cursive; font-size: 2.8rem; color: var(--text-mid); text-decoration: none; letter-spacing: 0.04em; transition: color 0.2s; line-height: 1; }
+  .mobile-nav a:hover { color: var(--cyan); }
+  .mobile-nav-rule { width: 40px; height: 1px; background: linear-gradient(to right, var(--violet), var(--cyan)); }
+
 </style>
 </head>
 <body>
@@ -171,7 +185,22 @@
     <span class="nav-needle-icon">✦</span>
     Handmade with love
   </div>
+  <button class="hamburger" id="hamburger" aria-label="Menu" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<div class="mobile-nav" id="mobileNav">
+  <a href="index.html#portfolio">Gallery</a>
+  <div class="mobile-nav-rule"></div>
+  <a href="index.html#about">About</a>
+  <div class="mobile-nav-rule"></div>
+  <a href="shop.html">Shop</a>
+  <div class="mobile-nav-rule"></div>
+  <a href="patterns.html">Patterns</a>
+  <div class="mobile-nav-rule"></div>
+  <a href="index.html#contact">Contact</a>
+</div>
 
 <!-- PAGE HEADER -->
 <section class="page-hero">
@@ -411,6 +440,19 @@
       const cats = card.dataset.cat || '';
       card.style.display = (cat === 'all' || cats.includes(cat)) ? '' : 'none';
     });
+  }
+
+  function toggleMenu() {
+    const btn = document.getElementById('hamburger');
+    const nav = document.getElementById('mobileNav');
+    btn.classList.toggle('open');
+    nav.classList.toggle('open');
+    document.body.style.overflow = nav.classList.contains('open') ? 'hidden' : '';
+  }
+  function closeMenu() {
+    document.getElementById('hamburger').classList.remove('open');
+    document.getElementById('mobileNav').classList.remove('open');
+    document.body.style.overflow = '';
   }
 </script>
 </body>
